@@ -281,8 +281,8 @@ const data = [
 			const target = e.target;
 
 			if (target === formOverlay ||
-				target.classList.contains('close')) {
-				formOverlay.classList.remove('.is-visible');
+				target.closest('.close')) {
+				formOverlay.classList.remove('is-visible');
 			}
 		});
 
@@ -300,6 +300,6 @@ const data = [
 			}
 		});
 	};
-	
+
 	window.phoneBookInit = init;
 }
