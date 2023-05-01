@@ -24,9 +24,15 @@ const data = [
 ];
 
 {
-	const addContactData = (contact) => {
-		data.push(contact);
+	const contacts = (data) => {
+		//добавление всего массива телефонной книги в локал сторадж
+		for (let i = 0; i < data.length; i++) {
+			let dataItem = data[i];
+			localStorage.setItem(`contact ${data[i].name}`, JSON.stringify(data[i]));
+		}
 	};
+
+	contacts(data);
 
 	const createContainer = () => {
 		const container = document.createElement('div');
@@ -295,6 +301,8 @@ const data = [
 
 			if (target.closest('.del-icon')) {
 				target.closest('.contact').remove();
+
+				removeStorage();
 			}
 		});
 	};
@@ -336,6 +344,46 @@ const data = [
 		hoverRow(allRow, logo);
 		deleteControl(btnDel, list);
 		formControl(form, list, closeModal);
+	};
+
+	const addContactData = (contact) => {
+		data.push(contact);
+
+		setStorage(contact);
+	};
+
+	const setStorage = (contact) => {
+		localStorage.setItem(`contact ${contact.name}`, JSON.stringify(contact));
+	};
+
+	const getStorage = () => {
+		const contactStorage = localStorage.getItem('contact');
+
+		if (contactStorage !== null) {
+			return contactStorage;
+		} else {
+			const noDataStorage = [];
+			console.log('пустой storage!');
+			return noDataStorage;
+		}
+	};
+
+	getStorage();
+
+	const removeStorage = () => {
+		const deleteContact = prompt('Введите номер телефона', '');
+
+		const contactRemoveStorage = (data, deleteContact) => {
+			for (let i = 0; i < data.length; i++) {
+				let dataPhoneNumber = data[i].phone;
+				if (dataPhoneNumber === deleteContact) {
+					const contactForRemove = data[i].name;
+					localStorage.removeItem(`contact ${contactForRemove}`);
+				}
+			}
+		};
+
+		contactRemoveStorage(data, deleteContact);
 	};
 
 	window.phoneBookInit = init;
